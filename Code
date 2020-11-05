@@ -17,7 +17,7 @@ try:
 except FileNotFoundError:
     print("DOSYA LOKASYONU VEYAHUT UZANTIDA HATA VAR")
 except OSError:
-    print("DÜZGÜN YAZ LOKASYONU")
+    print("DÜZGÜN YAZ LOKASYONU AMK")
 url = "https://www.instagram.com/accounts/login/"
 login_url = "https://www.instagram.com/accounts/login/ajax/"
 saat = int(datetime.now().timestamp())
